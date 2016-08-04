@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DateTimePicker" customModule="DemoDateTimePicker" customModuleProvider="target">
+            <connections>
+                <outlet property="cancelButton" destination="Xs3-ZE-i7G" id="NIO-m7-SgP"/>
+                <outlet property="doneButton" destination="tAs-zm-jM0" id="9MR-51-mRF"/>
+                <outlet property="pickerView" destination="DGp-AQ-pYc" id="G1z-1i-zm3"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="259"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="F8h-wZ-qce" userLabel="ButtonHolder">
+                    <rect key="frame" x="-1" y="0.0" width="377" height="43.5"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xs3-ZE-i7G">
+                            <rect key="frame" x="15" y="0.0" width="35" height="43.5"/>
+                            <fontDescription key="fontDescription" name="AvenirNextCondensed-Regular" family="Avenir Next Condensed" pointSize="15"/>
+                            <state key="normal" title="Cancel">
+                                <color key="titleColor" red="0.58431372549019611" green="0.58431372549019611" blue="0.58431372549019611" alpha="0.29999999999999999" colorSpace="calibratedRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="cancelButtonPressed:" destination="-1" eventType="touchUpInside" id="Jly-fv-Cwy"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tAs-zm-jM0">
+                            <rect key="frame" x="332" y="0.0" width="30" height="43.5"/>
+                            <fontDescription key="fontDescription" name="AvenirNextCondensed-Regular" family="Avenir Next Condensed" pointSize="15"/>
+                            <state key="normal" title="Done"/>
+                            <connections>
+                                <action selector="doneButtonPressed:" destination="-1" eventType="touchUpInside" id="kxr-ko-tsb"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.10000000000000001" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstItem="tAs-zm-jM0" firstAttribute="top" secondItem="F8h-wZ-qce" secondAttribute="top" id="cUi-Gf-4fT"/>
+                        <constraint firstAttribute="bottom" secondItem="Xs3-ZE-i7G" secondAttribute="bottom" id="cxZ-cE-kWc"/>
+                        <constraint firstAttribute="bottom" secondItem="tAs-zm-jM0" secondAttribute="bottom" id="iTS-S6-wXZ"/>
+                        <constraint firstItem="Xs3-ZE-i7G" firstAttribute="leading" secondItem="F8h-wZ-qce" secondAttribute="leading" constant="15" id="oBx-ub-Y9K"/>
+                        <constraint firstItem="Xs3-ZE-i7G" firstAttribute="top" secondItem="F8h-wZ-qce" secondAttribute="top" id="uKf-4R-GCj"/>
+                        <constraint firstAttribute="trailing" secondItem="tAs-zm-jM0" secondAttribute="trailing" constant="15" id="yQW-jC-mfq"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                            <real key="value" value="1"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                            <color key="value" red="0.83529411764705885" green="0.83529411764705885" blue="0.83529411764705885" alpha="0.90000000000000002" colorSpace="calibratedRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QDO-nu-rd8" userLabel="PickerViewHolder">
+                    <rect key="frame" x="0.0" y="43" width="375" height="215.5"/>
+                    <subviews>
+                        <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DGp-AQ-pYc">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="215"/>
+                        </pickerView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="DGp-AQ-pYc" secondAttribute="trailing" id="c7T-z0-doZ"/>
+                        <constraint firstAttribute="bottom" secondItem="DGp-AQ-pYc" secondAttribute="bottom" id="hRf-am-uVu"/>
+                        <constraint firstItem="DGp-AQ-pYc" firstAttribute="leading" secondItem="QDO-nu-rd8" secondAttribute="leading" id="l9N-hQ-43z"/>
+                        <constraint firstItem="DGp-AQ-pYc" firstAttribute="top" secondItem="QDO-nu-rd8" secondAttribute="top" id="rA9-BE-XXY"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="QDO-nu-rd8" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="1yB-bT-sb1"/>
+                <constraint firstItem="QDO-nu-rd8" firstAttribute="top" secondItem="F8h-wZ-qce" secondAttribute="bottom" id="4pz-Ft-7PD"/>
+                <constraint firstAttribute="bottom" secondItem="QDO-nu-rd8" secondAttribute="bottom" id="8CY-uK-dB8"/>
+                <constraint firstAttribute="trailing" secondItem="QDO-nu-rd8" secondAttribute="trailing" id="Fte-z8-cgY"/>
+                <constraint firstItem="F8h-wZ-qce" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="-1" id="T5w-sq-89K"/>
+                <constraint firstAttribute="trailing" secondItem="F8h-wZ-qce" secondAttribute="trailing" constant="-1" id="V0p-15-37v"/>
+                <constraint firstItem="F8h-wZ-qce" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" multiplier="0.168" id="eoe-zQ-uOH"/>
+                <constraint firstItem="F8h-wZ-qce" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="fDD-lD-tZq"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+        </view>
+    </objects>
+</document>
