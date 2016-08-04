@@ -20,6 +20,12 @@ class DateTimePicker: UIView {
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var doneButton: UIButton!
     
+    let HOUR_COMPONENT = 0
+    let MINUTE_COMPONENT = 1
+    let DAY_COMPONENT = 2
+    let MONTH_COMPONENT = 3
+    let YEAR_COMPONENT = 4
+    
     
     // MARK: - @IBInspectable
     private var materialKey = false
@@ -46,6 +52,21 @@ class DateTimePicker: UIView {
         }
     }
     
+    @IBInspectable var startYear: Int = 1900 {
+        didSet {
+            if startYear > endYear {
+                startYear = 1900
+            }
+        }
+    }
+    @IBInspectable var endYear: Int = 2036 {
+        didSet {
+            if endYear <= startYear {
+                endYear = 2036
+            }
+        }
+    }
+    
     
     // MARK: - VARIABLES
     var view: UIView!
@@ -54,12 +75,21 @@ class DateTimePicker: UIView {
     var days = [String]()
     var months = [String]()
     var years = [String]()
+    var maxDayOfMonth = 0
     
     var SINGLE_NUMBER_WIDTH: CGFloat = 50
     var MONTH_WIDTH: CGFloat = 80
     var YEAR_WIDTH: CGFloat = 70
     var COMPONENTS_HEIGHT: CGFloat = 50
     var DISTANCE_BETWEEN_TIME_AND_DATE: CGFloat = 20
+    
+    var currentHour = 0
+    var currentMin = 0
+    var currentDay = 0
+    var currentMonth = 0
+    var currentYear = 0
+    
+    var selectedDate = NSDate()
     
     
     // MARK: - INITIALIZATION
@@ -77,28 +107,6 @@ class DateTimePicker: UIView {
         super.init(coder: aDecoder)
         xibSetup()
         
-    }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        for i in 0...23 {
-            hours.append("\(i)")
-        }
-        for i in 0...59 {
-            if i < 10 {
-                minutes.append("0\(i)")
-            } else {
-                minutes.append("\(i)")
-            }
-        }
-        for i in 1991...2036 {
-            years.append("\(i)")
-        }
-        for i in 1...30 {
-            days.append("\(i)")
-        }
-        
-        months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     }
     
     func xibSetup() {
@@ -121,6 +129,53 @@ class DateTimePicker: UIView {
         let view: UIView = bundle.loadNibNamed(nibName, owner: self, options: nil)[0] as! UIView
         view.frame = self.bounds
         return view
+    }
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        maxDayOfMonth = getNumberOfDayInMonth(NSDate())
+        print("NumberOfDayInCurrentMonth: \(maxDayOfMonth)")
+        updateCurrentDateFrom(NSDate())
+        
+        for i in 0...23 {
+            hours.append("\(i)")
+        }
+        for i in 0...59 {
+            if i < 10 {
+                minutes.append("0\(i)")
+            } else {
+                minutes.append("\(i)")
+            }
+        }
+        for i in startYear...endYear {
+            years.append("\(i)")
+        }
+        for i in 1...maxDayOfMonth {
+            days.append("\(i)")
+        }
+        months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+        pickerView.selectRow(currentHour, inComponent: HOUR_COMPONENT, animated: false)
+        pickerView.selectRow(currentMin, inComponent: MINUTE_COMPONENT, animated: false)
+        pickerView.selectRow(currentDay - 1, inComponent: DAY_COMPONENT, animated: false)
+        pickerView.selectRow(currentMonth - 1, inComponent: MONTH_COMPONENT, animated: false)
+        pickerView.selectRow(currentYear - startYear, inComponent: YEAR_COMPONENT, animated: false)
+    }
+    
+    //MARK: - Caculater info of DATE
+    func getNumberOfDayInMonth(date: NSDate) -> Int {
+        let cal = NSCalendar(calendarIdentifier:NSCalendarIdentifierGregorian)!
+        //let days = cal.rangeOfUnit(.CalendarUnitDay, inUnit: .CalendarUnitMonth, forDate: date)
+        let days = cal.rangeOfUnit(NSCalendarUnit.Day, inUnit: NSCalendarUnit.Month, forDate: date)
+        return days.length
+    }
+    func updateCurrentDateFrom(date: NSDate) {
+        let calendar = NSCalendar.init(calendarIdentifier: NSCalendarIdentifierGregorian)
+        
+        currentHour = (calendar?.component(NSCalendarUnit.Hour, fromDate: date))!
+        currentMin = (calendar?.component(NSCalendarUnit.Minute, fromDate: date))!
+        currentDay = (calendar?.component(NSCalendarUnit.Day, fromDate: date))!
+        currentMonth = (calendar?.component(NSCalendarUnit.Month, fromDate: date))!
+        currentYear = (calendar?.component(NSCalendarUnit.Year, fromDate: date))!
+    
     }
     
     func initConstant () {
@@ -151,15 +206,15 @@ extension DateTimePicker: UIPickerViewDataSource {
     }
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         switch component {
-        case 0:
+        case HOUR_COMPONENT:
             return hours.count
-        case 1:
+        case MINUTE_COMPONENT:
             return minutes.count
-        case 2:
+        case DAY_COMPONENT:
             return days.count
-        case 3:
+        case MONTH_COMPONENT:
             return months.count
-        case 4:
+        case YEAR_COMPONENT:
             return years.count
         default:
             print("wrong way")
@@ -177,27 +232,27 @@ extension DateTimePicker: UIPickerViewDataSource {
         label.font = UIFont(name: "Avenir Next Condensed", size: 19)
         
         switch component {
-        case 0:
+        case HOUR_COMPONENT:
             view.frame = CGRectMake(0, 0, SINGLE_NUMBER_WIDTH, COMPONENTS_HEIGHT)
             label.frame = CGRectMake(0, 0, SINGLE_NUMBER_WIDTH, COMPONENTS_HEIGHT)
             //view.backgroundColor = UIColor.redColor()
             label.text =  hours[row]
-        case 1:
+        case MINUTE_COMPONENT:
             view.frame = CGRectMake(0, 0, SINGLE_NUMBER_WIDTH + DISTANCE_BETWEEN_TIME_AND_DATE, COMPONENTS_HEIGHT)
             label.frame = CGRectMake(0, 0, SINGLE_NUMBER_WIDTH, COMPONENTS_HEIGHT)
             //view.backgroundColor = UIColor.blueColor()
             label.text = minutes[row]
-        case 2:
+        case DAY_COMPONENT:
             view.frame = CGRectMake(0, 0, SINGLE_NUMBER_WIDTH, COMPONENTS_HEIGHT)
             label.frame = CGRectMake(0, 0, SINGLE_NUMBER_WIDTH, COMPONENTS_HEIGHT)
             //view.backgroundColor = UIColor.redColor()
             label.text = days[row]
-        case 3:
+        case MONTH_COMPONENT:
             view.frame = CGRectMake(0, 0, MONTH_WIDTH, COMPONENTS_HEIGHT)
             label.frame = CGRectMake(0, 0, MONTH_WIDTH, COMPONENTS_HEIGHT)
             //view.backgroundColor = UIColor.yellowColor()
             label.text = months[row]
-        case 4:
+        case YEAR_COMPONENT:
             view.frame = CGRectMake(0, 0, YEAR_WIDTH, COMPONENTS_HEIGHT)
             label.frame = CGRectMake(0, 0, YEAR_WIDTH, COMPONENTS_HEIGHT)
             //view.backgroundColor = UIColor.blueColor()
@@ -216,19 +271,19 @@ extension DateTimePicker: UIPickerViewDataSource {
     func pickerView(pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
         
         switch component {
-        case 0:
+        case HOUR_COMPONENT:
             return SINGLE_NUMBER_WIDTH
             
-        case 1:
+        case MINUTE_COMPONENT:
             return SINGLE_NUMBER_WIDTH + DISTANCE_BETWEEN_TIME_AND_DATE
             
-        case 2:
+        case DAY_COMPONENT:
             return SINGLE_NUMBER_WIDTH
             
-        case 3:
+        case MONTH_COMPONENT:
             return MONTH_WIDTH
             
-        case 4:
+        case YEAR_COMPONENT:
             return YEAR_WIDTH
             
         default:
@@ -236,29 +291,6 @@ extension DateTimePicker: UIPickerViewDataSource {
         }
         
     }
-    
-    /*
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        switch component {
-        case 0:
-            return hours[row]
-        case 1:
-            return twodots[row]
-        case 2:
-            return minutes[row]
-        case 3:
-            return days[row]
-        case 4:
-            return months[row]
-        case 5:
-            return years[row]
-        default:
-            print("wrong way")
-            return ""
-        }
-    }
-    */
-    
 
 }
 
@@ -266,14 +298,44 @@ extension DateTimePicker: UIPickerViewDataSource {
 extension DateTimePicker: UIPickerViewDelegate {
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        print("\(pickerView.selectedRowInComponent(0))")
-        print("\(pickerView.selectedRowInComponent(1))")
-        print("\(pickerView.selectedRowInComponent(2))")
-        print("\(pickerView.selectedRowInComponent(3))")
-        print("\(pickerView.selectedRowInComponent(4))")
+        
+        switch component {
+        case HOUR_COMPONENT:
+            currentHour = row
+            print("row: \(row)")
+            
+        case MINUTE_COMPONENT:
+            currentMin = row
+            print("row: \(row)")
+            
+        case DAY_COMPONENT:
+            currentDay = row + 1
+            print("row: \(row)")
+            
+        case MONTH_COMPONENT:
+            currentMonth = row + 1
+            print("row: \(row)")
+            
+        case YEAR_COMPONENT:
+            currentYear = startYear + row
+            print("row: \(row)")
+            
+        default:
+            print("Default")
+        }
+         let dateString = "\(currentYear)-\(currentMonth)-\(currentDay) \(currentHour):\(currentMin)"
+        print(dateString)
+        
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:MM"
+        
+        selectedDate = dateFormatter.dateFromString(dateString)!
+        print(selectedDate)
+        
+        
         
         if component == 1 {
-            let selectedView = pickerView.viewForRow(row, forComponent: component)
+            let selectedView = pickerView.viewForRow(row, forComponent: 1)
             let twodotsLabel = UILabel(frame: CGRectMake(-5,0,10, 50))
             twodotsLabel.text = ":"
             twodotsLabel.font = UIFont(name: "Avenir Next Condensed", size: 19)
@@ -281,31 +343,7 @@ extension DateTimePicker: UIPickerViewDelegate {
         }
         
         
-        //Setup twodots label
-//        let offsetX = self.frame.size.width / 2 - 2 * SINGLE_NUMBER_WIDTH - DISTANCE_BETWEEN_TIME_AND_DATE
-//        let offsetY = pickerView.frame.size.height / 2
-//        let width:CGFloat = 10
-//        let height = COMPONENTS_HEIGHT
-//        
-//        let twodotsLabel = UILabel(frame: CGRectMake(offsetX, offsetY, width, height))
-//        twodotsLabel.text = ":"
-//        twodotsLabel.font = UIFont(name: "Avenir Next Condensed", size: 19)
-//        self.addSubview(twodotsLabel)
         
-//        switch component {
-//        case 0:
-//            print("\(hours[row])")
-//        case 1:
-//            print("\(minutes[row])")
-//        case 2:
-//            print("\(days[row])")
-//        case 3:
-//            print("\(months[row])")
-//        case 4:
-//            print("\(years[row])")
-//        default:
-//            print("wrong way")
-//        }
     }
 
 }

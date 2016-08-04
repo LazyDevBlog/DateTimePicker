@@ -18,6 +18,14 @@
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Z3-C8-hmV" customClass="DateTimePicker" customModule="DemoDateTimePicker" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="408" width="375" height="259"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="startYear">
+                            <integer key="value" value="1900"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="endYear">
+                            <integer key="value" value="2036"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
