@@ -12,11 +12,7 @@ import UIKit
 class DateTimePicker: UIView {
     // MARK: - CONSTANTS
     let nibName = "DateTimePicker"
-    let SINGLE_NUMBER_WIDTH: CGFloat = 50
-    let MONTH_WIDTH: CGFloat = 80
-    let YEAR_WIDTH: CGFloat = 70
-    let COMPONENTS_HEIGHT: CGFloat = 50
-    let DISTANCE_BETWEEN_TIME_AND_DATE: CGFloat = 20
+    
     
     
     // MARK: - OUTLETS
@@ -58,6 +54,12 @@ class DateTimePicker: UIView {
     var days = [String]()
     var months = [String]()
     var years = [String]()
+    
+    var SINGLE_NUMBER_WIDTH: CGFloat = 50
+    var MONTH_WIDTH: CGFloat = 80
+    var YEAR_WIDTH: CGFloat = 70
+    var COMPONENTS_HEIGHT: CGFloat = 50
+    var DISTANCE_BETWEEN_TIME_AND_DATE: CGFloat = 20
     
     
     // MARK: - INITIALIZATION
@@ -110,8 +112,8 @@ class DateTimePicker: UIView {
         
         pickerView.delegate = self
         pickerView.dataSource = self
-        
-        
+        initConstant()
+
     }
     
     func loadViewFromNib() -> UIView {
@@ -119,6 +121,17 @@ class DateTimePicker: UIView {
         let view: UIView = bundle.loadNibNamed(nibName, owner: self, options: nil)[0] as! UIView
         view.frame = self.bounds
         return view
+    }
+    
+    func initConstant () {
+        //Designed base on iPhone6 screen
+        let frameWidth = self.frame.size.width
+        SINGLE_NUMBER_WIDTH = frameWidth / 8
+        MONTH_WIDTH = 2 * SINGLE_NUMBER_WIDTH
+        YEAR_WIDTH = SINGLE_NUMBER_WIDTH
+        COMPONENTS_HEIGHT = (50 * frameWidth) / 375
+        DISTANCE_BETWEEN_TIME_AND_DATE = SINGLE_NUMBER_WIDTH / 4
+        
     }
     
     @IBAction func cancelButtonPressed(sender: AnyObject) {
@@ -258,6 +271,27 @@ extension DateTimePicker: UIPickerViewDelegate {
         print("\(pickerView.selectedRowInComponent(2))")
         print("\(pickerView.selectedRowInComponent(3))")
         print("\(pickerView.selectedRowInComponent(4))")
+        
+        if component == 1 {
+            let selectedView = pickerView.viewForRow(row, forComponent: component)
+            let twodotsLabel = UILabel(frame: CGRectMake(-5,0,10, 50))
+            twodotsLabel.text = ":"
+            twodotsLabel.font = UIFont(name: "Avenir Next Condensed", size: 19)
+            selectedView!.addSubview(twodotsLabel)
+        }
+        
+        
+        //Setup twodots label
+//        let offsetX = self.frame.size.width / 2 - 2 * SINGLE_NUMBER_WIDTH - DISTANCE_BETWEEN_TIME_AND_DATE
+//        let offsetY = pickerView.frame.size.height / 2
+//        let width:CGFloat = 10
+//        let height = COMPONENTS_HEIGHT
+//        
+//        let twodotsLabel = UILabel(frame: CGRectMake(offsetX, offsetY, width, height))
+//        twodotsLabel.text = ":"
+//        twodotsLabel.font = UIFont(name: "Avenir Next Condensed", size: 19)
+//        self.addSubview(twodotsLabel)
+        
 //        switch component {
 //        case 0:
 //            print("\(hours[row])")
