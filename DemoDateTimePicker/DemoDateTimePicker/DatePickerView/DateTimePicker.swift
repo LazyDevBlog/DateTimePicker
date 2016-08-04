@@ -12,6 +12,11 @@ import UIKit
 class DateTimePicker: UIView {
     // MARK: - CONSTANTS
     let nibName = "DateTimePicker"
+    let SINGLE_NUMBER_WIDTH: CGFloat = 50
+    let MONTH_WIDTH: CGFloat = 80
+    let YEAR_WIDTH: CGFloat = 70
+    let COMPONENTS_HEIGHT: CGFloat = 50
+    let DISTANCE_BETWEEN_TIME_AND_DATE: CGFloat = 20
     
     
     // MARK: - OUTLETS
@@ -50,7 +55,6 @@ class DateTimePicker: UIView {
     var view: UIView!
     var hours = [String]()
     var minutes = [String]()
-    let twodots = [":"]
     var days = [String]()
     var months = [String]()
     var years = [String]()
@@ -107,6 +111,7 @@ class DateTimePicker: UIView {
         pickerView.delegate = self
         pickerView.dataSource = self
         
+        
     }
     
     func loadViewFromNib() -> UIView {
@@ -128,7 +133,7 @@ class DateTimePicker: UIView {
 //MARK: - UIPickerViewDataSource
 extension DateTimePicker: UIPickerViewDataSource {
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
-        return 6
+        return 5
         
     }
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
@@ -136,14 +141,12 @@ extension DateTimePicker: UIPickerViewDataSource {
         case 0:
             return hours.count
         case 1:
-            return 1
-        case 2:
             return minutes.count
-        case 3:
+        case 2:
             return days.count
-        case 4:
+        case 3:
             return months.count
-        case 5:
+        case 4:
             return years.count
         default:
             print("wrong way")
@@ -151,6 +154,77 @@ extension DateTimePicker: UIPickerViewDataSource {
         }
     }
     
+    func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView?) -> UIView {
+        
+        //let view = UIView(frame: CGRectMake(0,0, 50,50))
+        let view = UIView()
+        let label = UILabel()
+        view.addSubview(label)
+        label.textAlignment = NSTextAlignment.Center
+        label.font = UIFont(name: "Avenir Next Condensed", size: 19)
+        
+        switch component {
+        case 0:
+            view.frame = CGRectMake(0, 0, SINGLE_NUMBER_WIDTH, COMPONENTS_HEIGHT)
+            label.frame = CGRectMake(0, 0, SINGLE_NUMBER_WIDTH, COMPONENTS_HEIGHT)
+            //view.backgroundColor = UIColor.redColor()
+            label.text =  hours[row]
+        case 1:
+            view.frame = CGRectMake(0, 0, SINGLE_NUMBER_WIDTH + DISTANCE_BETWEEN_TIME_AND_DATE, COMPONENTS_HEIGHT)
+            label.frame = CGRectMake(0, 0, SINGLE_NUMBER_WIDTH, COMPONENTS_HEIGHT)
+            //view.backgroundColor = UIColor.blueColor()
+            label.text = minutes[row]
+        case 2:
+            view.frame = CGRectMake(0, 0, SINGLE_NUMBER_WIDTH, COMPONENTS_HEIGHT)
+            label.frame = CGRectMake(0, 0, SINGLE_NUMBER_WIDTH, COMPONENTS_HEIGHT)
+            //view.backgroundColor = UIColor.redColor()
+            label.text = days[row]
+        case 3:
+            view.frame = CGRectMake(0, 0, MONTH_WIDTH, COMPONENTS_HEIGHT)
+            label.frame = CGRectMake(0, 0, MONTH_WIDTH, COMPONENTS_HEIGHT)
+            //view.backgroundColor = UIColor.yellowColor()
+            label.text = months[row]
+        case 4:
+            view.frame = CGRectMake(0, 0, YEAR_WIDTH, COMPONENTS_HEIGHT)
+            label.frame = CGRectMake(0, 0, YEAR_WIDTH, COMPONENTS_HEIGHT)
+            //view.backgroundColor = UIColor.blueColor()
+            label.text = years[row]
+        default:
+            print("something wrong")
+            label.text = ""
+        }
+        
+        
+        
+        return view
+        
+    }
+    
+    func pickerView(pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
+        
+        switch component {
+        case 0:
+            return SINGLE_NUMBER_WIDTH
+            
+        case 1:
+            return SINGLE_NUMBER_WIDTH + DISTANCE_BETWEEN_TIME_AND_DATE
+            
+        case 2:
+            return SINGLE_NUMBER_WIDTH
+            
+        case 3:
+            return MONTH_WIDTH
+            
+        case 4:
+            return YEAR_WIDTH
+            
+        default:
+            return 0
+        }
+        
+    }
+    
+    /*
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         switch component {
         case 0:
@@ -170,7 +244,7 @@ extension DateTimePicker: UIPickerViewDataSource {
             return ""
         }
     }
-    
+    */
     
 
 }
@@ -179,22 +253,25 @@ extension DateTimePicker: UIPickerViewDataSource {
 extension DateTimePicker: UIPickerViewDelegate {
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        switch component {
-        case 0:
-            print("\(hours[row])")
-        case 1:
-            print("\(twodots[row])")
-        case 2:
-            print("\(minutes[row])")
-        case 3:
-            print("\(days[row])")
-        case 4:
-            print("\(months[row])")
-        case 5:
-            print("\(years[row])")
-        default:
-            print("wrong way")
-        }
+        print("\(pickerView.selectedRowInComponent(0))")
+        print("\(pickerView.selectedRowInComponent(1))")
+        print("\(pickerView.selectedRowInComponent(2))")
+        print("\(pickerView.selectedRowInComponent(3))")
+        print("\(pickerView.selectedRowInComponent(4))")
+//        switch component {
+//        case 0:
+//            print("\(hours[row])")
+//        case 1:
+//            print("\(minutes[row])")
+//        case 2:
+//            print("\(days[row])")
+//        case 3:
+//            print("\(months[row])")
+//        case 4:
+//            print("\(years[row])")
+//        default:
+//            print("wrong way")
+//        }
     }
 
 }
