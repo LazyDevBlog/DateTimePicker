@@ -13,8 +13,8 @@ class DateTimePicker: UIView {
     // MARK: - CONSTANTS
     let nibName = "DateTimePicker"
     
-    // MARK: - OUTLETS
     
+    // MARK: - OUTLETS
     @IBOutlet weak var pickerView: UIPickerView!
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var doneButton: UIButton!
@@ -48,6 +48,12 @@ class DateTimePicker: UIView {
     
     // MARK: - VARIABLES
     var view: UIView!
+    var hours = [String]()
+    var minutes = [String]()
+    let twodots = [":"]
+    var days = [String]()
+    var months = [String]()
+    var years = [String]()
     
     
     // MARK: - INITIALIZATION
@@ -69,6 +75,24 @@ class DateTimePicker: UIView {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        for i in 0...23 {
+            hours.append("\(i)")
+        }
+        for i in 0...59 {
+            if i < 10 {
+                minutes.append("0\(i)")
+            } else {
+                minutes.append("\(i)")
+            }
+        }
+        for i in 1991...2036 {
+            years.append("\(i)")
+        }
+        for i in 1...30 {
+            days.append("\(i)")
+        }
+        
+        months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     }
     
     func xibSetup() {
@@ -104,20 +128,47 @@ class DateTimePicker: UIView {
 //MARK: - UIPickerViewDataSource
 extension DateTimePicker: UIPickerViewDataSource {
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
-        return 3
+        return 6
         
     }
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return 10
+        switch component {
+        case 0:
+            return hours.count
+        case 1:
+            return 1
+        case 2:
+            return minutes.count
+        case 3:
+            return days.count
+        case 4:
+            return months.count
+        case 5:
+            return years.count
+        default:
+            print("wrong way")
+            return 0
+        }
     }
     
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        if component == 0{
-            return "Int: \(row)"
-        }else if component == 1{
-            return "String: \(row)"
+        switch component {
+        case 0:
+            return hours[row]
+        case 1:
+            return twodots[row]
+        case 2:
+            return minutes[row]
+        case 3:
+            return days[row]
+        case 4:
+            return months[row]
+        case 5:
+            return years[row]
+        default:
+            print("wrong way")
+            return ""
         }
-        return "Other: \(row)"
     }
     
     
@@ -128,14 +179,21 @@ extension DateTimePicker: UIPickerViewDataSource {
 extension DateTimePicker: UIPickerViewDelegate {
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        if component == 0{
-            print("Int component: \(row) selected")
-        }else if component == 1{
-            print("String component: \(row) selected")
-            
-        }else{
-            print("Other component: \(row) selected")
-            
+        switch component {
+        case 0:
+            print("\(hours[row])")
+        case 1:
+            print("\(twodots[row])")
+        case 2:
+            print("\(minutes[row])")
+        case 3:
+            print("\(days[row])")
+        case 4:
+            print("\(months[row])")
+        case 5:
+            print("\(years[row])")
+        default:
+            print("wrong way")
         }
     }
 
