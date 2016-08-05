@@ -153,11 +153,11 @@ class DateTimePicker: UIView {
             days.append("\(i)")
         }
         months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-        pickerView.selectRow(currentHour, inComponent: HOUR_COMPONENT, animated: false)
-        pickerView.selectRow(currentMin, inComponent: MINUTE_COMPONENT, animated: false)
-        pickerView.selectRow(currentDay - 1, inComponent: DAY_COMPONENT, animated: false)
-        pickerView.selectRow(currentMonth - 1, inComponent: MONTH_COMPONENT, animated: false)
-        pickerView.selectRow(currentYear - startYear, inComponent: YEAR_COMPONENT, animated: false)
+        pickerView.selectRow(hours.count * 100 + currentHour, inComponent: HOUR_COMPONENT, animated: false)
+        pickerView.selectRow(minutes.count * 100 + currentMin, inComponent: MINUTE_COMPONENT, animated: false)
+        pickerView.selectRow(days.count * 100 + currentDay - 1, inComponent: DAY_COMPONENT, animated: false)
+        pickerView.selectRow(months.count * 100 + currentMonth - 1, inComponent: MONTH_COMPONENT, animated: false)
+        pickerView.selectRow(years.count * 100 + currentYear - startYear, inComponent: YEAR_COMPONENT, animated: false)
     }
     
     //MARK: - Caculater info of DATE
@@ -167,9 +167,16 @@ class DateTimePicker: UIView {
         let days = cal.rangeOfUnit(NSCalendarUnit.Day, inUnit: NSCalendarUnit.Month, forDate: date)
         return days.length
     }
+    func refreshDaysData(date: NSDate) {
+        maxDayOfMonth = getNumberOfDayInMonth(date)
+        days.removeAll()
+        for i in 1...maxDayOfMonth {
+            days.append("\(i)")
+        }
+        
+    }
     func updateCurrentDateFrom(date: NSDate) {
         let calendar = NSCalendar.init(calendarIdentifier: NSCalendarIdentifierGregorian)
-        
         currentHour = (calendar?.component(NSCalendarUnit.Hour, fromDate: date))!
         currentMin = (calendar?.component(NSCalendarUnit.Minute, fromDate: date))!
         currentDay = (calendar?.component(NSCalendarUnit.Day, fromDate: date))!
@@ -326,6 +333,9 @@ extension DateTimePicker: UIPickerViewDelegate {
         
         selectedDate = Date.from(currentYear, month: currentMonth, day: currentDay, hour: currentHour, minute: currentMin)
         print("Selected Date: \(selectedDate)")
+        
+        refreshDaysData(selectedDate)
+        pickerView.reloadComponent(DAY_COMPONENT)
 
         if component == 1 {
             let selectedView = pickerView.viewForRow(row, forComponent: 1)
