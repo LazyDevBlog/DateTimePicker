@@ -207,15 +207,15 @@ extension DateTimePicker: UIPickerViewDataSource {
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         switch component {
         case HOUR_COMPONENT:
-            return hours.count
+            return hours.count * 1000
         case MINUTE_COMPONENT:
-            return minutes.count
+            return minutes.count * 1000
         case DAY_COMPONENT:
-            return days.count
+            return days.count * 1000
         case MONTH_COMPONENT:
-            return months.count
+            return months.count * 1000
         case YEAR_COMPONENT:
-            return years.count
+            return years.count * 1000
         default:
             print("wrong way")
             return 0
@@ -236,27 +236,27 @@ extension DateTimePicker: UIPickerViewDataSource {
             view.frame = CGRectMake(0, 0, SINGLE_NUMBER_WIDTH, COMPONENTS_HEIGHT)
             label.frame = CGRectMake(0, 0, SINGLE_NUMBER_WIDTH, COMPONENTS_HEIGHT)
             //view.backgroundColor = UIColor.redColor()
-            label.text =  hours[row]
+            label.text =  hours[row % hours.count]
         case MINUTE_COMPONENT:
             view.frame = CGRectMake(0, 0, SINGLE_NUMBER_WIDTH + DISTANCE_BETWEEN_TIME_AND_DATE, COMPONENTS_HEIGHT)
             label.frame = CGRectMake(0, 0, SINGLE_NUMBER_WIDTH, COMPONENTS_HEIGHT)
             //view.backgroundColor = UIColor.blueColor()
-            label.text = minutes[row]
+            label.text = minutes[row % minutes.count]
         case DAY_COMPONENT:
             view.frame = CGRectMake(0, 0, SINGLE_NUMBER_WIDTH, COMPONENTS_HEIGHT)
             label.frame = CGRectMake(0, 0, SINGLE_NUMBER_WIDTH, COMPONENTS_HEIGHT)
             //view.backgroundColor = UIColor.redColor()
-            label.text = days[row]
+            label.text = days[row % days.count]
         case MONTH_COMPONENT:
             view.frame = CGRectMake(0, 0, MONTH_WIDTH, COMPONENTS_HEIGHT)
             label.frame = CGRectMake(0, 0, MONTH_WIDTH, COMPONENTS_HEIGHT)
             //view.backgroundColor = UIColor.yellowColor()
-            label.text = months[row]
+            label.text = months[row % months.count]
         case YEAR_COMPONENT:
             view.frame = CGRectMake(0, 0, YEAR_WIDTH, COMPONENTS_HEIGHT)
             label.frame = CGRectMake(0, 0, YEAR_WIDTH, COMPONENTS_HEIGHT)
             //view.backgroundColor = UIColor.blueColor()
-            label.text = years[row]
+            label.text = years[row % years.count]
         default:
             print("something wrong")
             label.text = ""
@@ -301,39 +301,32 @@ extension DateTimePicker: UIPickerViewDelegate {
         
         switch component {
         case HOUR_COMPONENT:
-            currentHour = row
+            currentHour = row % hours.count
             print("row: \(row)")
             
         case MINUTE_COMPONENT:
-            currentMin = row
+            currentMin = row % minutes.count
             print("row: \(row)")
             
         case DAY_COMPONENT:
-            currentDay = row + 1
+            currentDay = (row % days.count) + 1
             print("row: \(row)")
             
         case MONTH_COMPONENT:
-            currentMonth = row + 1
+            currentMonth = (row % months.count) + 1
             print("row: \(row)")
             
         case YEAR_COMPONENT:
-            currentYear = startYear + row
+            currentYear = startYear + (row % years.count)
             print("row: \(row)")
             
         default:
             print("Default")
         }
-         let dateString = "\(currentYear)-\(currentMonth)-\(currentDay) \(currentHour):\(currentMin)"
-        print(dateString)
         
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:MM"
-        
-        selectedDate = dateFormatter.dateFromString(dateString)!
-        print(selectedDate)
-        
-        
-        
+        selectedDate = Date.from(currentYear, month: currentMonth, day: currentDay, hour: currentHour, minute: currentMin)
+        print("Selected Date: \(selectedDate)")
+
         if component == 1 {
             let selectedView = pickerView.viewForRow(row, forComponent: 1)
             let twodotsLabel = UILabel(frame: CGRectMake(-5,0,10, 50))
@@ -369,6 +362,29 @@ extension UIView {
         }
     }
 
+}
+
+class Date {
+    
+    class func from(year:Int, month:Int, day:Int, hour: Int, minute: Int) -> NSDate {
+        let c = NSDateComponents()
+        c.year = year
+        c.month = month
+        c.day = day
+        c.hour = hour
+        c.minute = minute
+        
+        let gregorian = NSCalendar(identifier:NSCalendarIdentifierGregorian)
+        let date = gregorian!.dateFromComponents(c)
+        return date!
+    }
+    
+    class func parse(dateStr:String, format:String="yyyy-MM-dd") -> NSDate {
+        let dateFmt = NSDateFormatter()
+        dateFmt.timeZone = NSTimeZone.defaultTimeZone()
+        dateFmt.dateFormat = format
+        return dateFmt.dateFromString(dateStr)!
+    }
 }
 
 
