@@ -90,6 +90,7 @@ class DateTimePicker: UIView {
     var currentYear = 0
     
     var selectedDate = NSDate()
+    var selectedDayRow = 0
     
     
     // MARK: - INITIALIZATION
@@ -158,6 +159,8 @@ class DateTimePicker: UIView {
         pickerView.selectRow(days.count * 100 + currentDay - 1, inComponent: DAY_COMPONENT, animated: false)
         pickerView.selectRow(months.count * 100 + currentMonth - 1, inComponent: MONTH_COMPONENT, animated: false)
         pickerView.selectRow(years.count * 100 + currentYear - startYear, inComponent: YEAR_COMPONENT, animated: false)
+        
+        selectedDayRow = minutes.count * 100 + currentMin
     }
     
     //MARK: - Caculater info of DATE
@@ -249,6 +252,15 @@ extension DateTimePicker: UIPickerViewDataSource {
             label.frame = CGRectMake(0, 0, SINGLE_NUMBER_WIDTH, COMPONENTS_HEIGHT)
             //view.backgroundColor = UIColor.blueColor()
             label.text = minutes[row % minutes.count]
+            let twodotsLabel = UILabel(frame: CGRectMake(-5,0,10, 50))
+            twodotsLabel.text = ":"
+            twodotsLabel.font = UIFont(name: "Avenir Next Condensed", size: 19)
+            view.addSubview(twodotsLabel)
+            if row == selectedDayRow {
+                twodotsLabel.textColor = UIColor.blackColor()
+            } else {
+                twodotsLabel.textColor = UIColor.whiteColor()
+            }
         case DAY_COMPONENT:
             view.frame = CGRectMake(0, 0, SINGLE_NUMBER_WIDTH, COMPONENTS_HEIGHT)
             label.frame = CGRectMake(0, 0, SINGLE_NUMBER_WIDTH, COMPONENTS_HEIGHT)
@@ -312,6 +324,8 @@ extension DateTimePicker: UIPickerViewDelegate {
             print("row: \(row)")
             
         case MINUTE_COMPONENT:
+            selectedDayRow = row
+            pickerView.reloadComponent(MINUTE_COMPONENT)
             currentMin = row % minutes.count
             print("row: \(row)")
             
@@ -336,16 +350,6 @@ extension DateTimePicker: UIPickerViewDelegate {
         
         refreshDaysData(selectedDate)
         pickerView.reloadComponent(DAY_COMPONENT)
-
-        if component == 1 {
-            let selectedView = pickerView.viewForRow(row, forComponent: 1)
-            let twodotsLabel = UILabel(frame: CGRectMake(-5,0,10, 50))
-            twodotsLabel.text = ":"
-            twodotsLabel.font = UIFont(name: "Avenir Next Condensed", size: 19)
-            selectedView!.addSubview(twodotsLabel)
-        }
-        
-        
         
     }
 
