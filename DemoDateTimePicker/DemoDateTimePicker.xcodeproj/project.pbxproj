@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B21E31B01D587C45003D5FF1 /* AFDateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21E31AF1D587C45003D5FF1 /* AFDateExtension.swift */; };
 		B2FC05CF1D5326A400CEC16D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FC05CE1D5326A400CEC16D /* AppDelegate.swift */; };
 		B2FC05D41D5326A400CEC16D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2FC05D21D5326A400CEC16D /* Main.storyboard */; };
 		B2FC05D61D5326A400CEC16D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2FC05D51D5326A400CEC16D /* Assets.xcassets */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B21E31AF1D587C45003D5FF1 /* AFDateExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AFDateExtension.swift; sourceTree = "<group>"; };
 		B2FC05CB1D5326A400CEC16D /* DemoDateTimePicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DemoDateTimePicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2FC05CE1D5326A400CEC16D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B2FC05D31D5326A400CEC16D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -71,6 +73,7 @@
 		B2FC05E01D5326C000CEC16D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				B21E31AF1D587C45003D5FF1 /* AFDateExtension.swift */,
 				B2FC05D21D5326A400CEC16D /* Main.storyboard */,
 				B2FC05D51D5326A400CEC16D /* Assets.xcassets */,
 				B2FC05D71D5326A400CEC16D /* LaunchScreen.storyboard */,
@@ -172,6 +175,7 @@
 			files = (
 				B2FC05EA1D53289C00CEC16D /* DateTimePicker.swift in Sources */,
 				B2FC05CF1D5326A400CEC16D /* AppDelegate.swift in Sources */,
+				B21E31B01D587C45003D5FF1 /* AFDateExtension.swift in Sources */,
 				B2FC05E51D53271A00CEC16D /* MainVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -322,6 +326,7 @@
 				B2FC05DF1D5326A400CEC16D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

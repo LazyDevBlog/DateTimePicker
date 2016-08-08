@@ -8,6 +8,11 @@
 
 import UIKit
 
+protocol DateTimePickerDelegate: class {
+    func DateTimePiker(picker: DateTimePicker, doneButtonPressed doneButton: UIButton, selecedDate date: NSDate )
+    func DateTimePiker(picker:DateTimePicker, cancelButtonPressed cancelButton: UIButton)
+}
+
 @IBDesignable
 class DateTimePicker: UIView {
     // MARK: - CONSTANTS
@@ -92,6 +97,8 @@ class DateTimePicker: UIView {
     var selectedDate = NSDate()
     var selectedDayRow = 0
     
+    var delegate: DateTimePickerDelegate?
+    
     
     // MARK: - INITIALIZATION
     override init(frame: CGRect) {
@@ -122,6 +129,7 @@ class DateTimePicker: UIView {
         pickerView.delegate = self
         pickerView.dataSource = self
         initConstant()
+        
 
     }
     
@@ -166,7 +174,6 @@ class DateTimePicker: UIView {
     //MARK: - Caculater info of DATE
     func getNumberOfDayInMonth(date: NSDate) -> Int {
         let cal = NSCalendar(calendarIdentifier:NSCalendarIdentifierGregorian)!
-        //let days = cal.rangeOfUnit(.CalendarUnitDay, inUnit: .CalendarUnitMonth, forDate: date)
         let days = cal.rangeOfUnit(NSCalendarUnit.Day, inUnit: NSCalendarUnit.Month, forDate: date)
         return days.length
     }
@@ -200,9 +207,11 @@ class DateTimePicker: UIView {
     }
     
     @IBAction func cancelButtonPressed(sender: AnyObject) {
+        delegate?.DateTimePiker(self, cancelButtonPressed: sender as! UIButton)
     }
     
     @IBAction func doneButtonPressed(sender: AnyObject) {
+        delegate?.DateTimePiker(self, doneButtonPressed: sender as! UIButton, selecedDate: self.selectedDate)
     }
     
 
@@ -345,11 +354,14 @@ extension DateTimePicker: UIPickerViewDelegate {
             print("Default")
         }
         
-        selectedDate = Date.from(currentYear, month: currentMonth, day: currentDay, hour: currentHour, minute: currentMin)
-        print("Selected Date: \(selectedDate)")
+        let tempSelectedDate = Date.from(currentYear, month: currentMonth, day: 1, hour: 1, minute: 0)
+        print("Selected Date: \(tempSelectedDate)")
         
-        refreshDaysData(selectedDate)
-        pickerView.reloadComponent(DAY_COMPONENT)
+        if currentDay > getNumberOfDayInMonth(tempSelectedDate) {
+            refreshDaysData(tempSelectedDate)
+            pickerView.reloadComponent(DAY_COMPONENT)
+            selectedDate = Date.from(currentYear, month: currentMonth, day: currentDay, hour: currentHour, minute: currentMin)
+        }
         
     }
 

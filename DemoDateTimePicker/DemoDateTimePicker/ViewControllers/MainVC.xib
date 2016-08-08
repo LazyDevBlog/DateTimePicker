@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10117"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MainVC" customModule="DemoDateTimePicker" customModuleProvider="target">
             <connections>
+                <outlet property="dateLabel" destination="uNg-k7-awu" id="IOz-1h-9FS"/>
+                <outlet property="dateTimePicker" destination="6Z3-C8-hmV" id="wXf-93-6nG"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -27,15 +29,30 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uNg-k7-awu">
+                    <rect key="frame" x="0.0" y="100" width="375" height="24"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstItem="uNg-k7-awu" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="8wJ-xi-ndj"/>
                 <constraint firstItem="6Z3-C8-hmV" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Bfo-wK-1oP"/>
+                <constraint firstItem="uNg-k7-awu" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="100" id="Gmo-lw-Vme"/>
                 <constraint firstItem="6Z3-C8-hmV" firstAttribute="height" secondItem="i5M-Pr-FkT" secondAttribute="height" multiplier="0.388" id="Rtq-EZ-wKr"/>
+                <constraint firstAttribute="trailing" secondItem="uNg-k7-awu" secondAttribute="trailing" id="e2n-yG-H2n"/>
                 <constraint firstAttribute="bottom" secondItem="6Z3-C8-hmV" secondAttribute="bottom" id="fZf-Bi-T6r"/>
+                <constraint firstItem="uNg-k7-awu" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="mHM-0i-coO"/>
                 <constraint firstAttribute="trailing" secondItem="6Z3-C8-hmV" secondAttribute="trailing" id="oi0-Qc-LbT"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="mHM-0i-coO"/>
+                </mask>
+            </variation>
         </view>
     </objects>
 </document>

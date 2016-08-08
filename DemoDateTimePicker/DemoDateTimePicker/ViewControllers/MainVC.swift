@@ -9,10 +9,16 @@
 import UIKit
 
 class MainVC: UIViewController {
+    
+    @IBOutlet weak var dateTimePicker: DateTimePicker!
+    
+    @IBOutlet weak var dateLabel: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBarHidden = true
+        
+        self.dateTimePicker.delegate = self
 
         // Do any additional setup after loading the view.
     }
@@ -33,4 +39,16 @@ class MainVC: UIViewController {
     }
     */
 
+}
+
+
+extension MainVC: DateTimePickerDelegate {
+    func DateTimePiker(picker: DateTimePicker, cancelButtonPressed cancelButton: UIButton) {
+        print("Cancel")
+    }
+    
+    func DateTimePiker(picker: DateTimePicker, doneButtonPressed doneButton: UIButton, selecedDate date: NSDate) {
+        print("Done")
+        dateLabel.text = date.toString()
+    }
 }
