@@ -49,6 +49,6 @@ extension MainVC: DateTimePickerDelegate {
     
     func DateTimePiker(picker: DateTimePicker, doneButtonPressed doneButton: UIButton, selecedDate date: NSDate) {
         print("Done")
-        dateLabel.text = date.toString()
+        dateLabel.text = date.toString(format: .Custom("dd MMM yyyy HH:mm"))
     }
 }

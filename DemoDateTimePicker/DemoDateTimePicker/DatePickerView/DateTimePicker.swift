@@ -354,15 +354,22 @@ extension DateTimePicker: UIPickerViewDelegate {
             print("Default")
         }
         
-        let tempSelectedDate = Date.from(currentYear, month: currentMonth, day: 1, hour: 1, minute: 0)
+        let tempSelectedDate = Date.from(currentYear, month: currentMonth , day: 2, hour: 1, minute: 0)
         print("Selected Date: \(tempSelectedDate)")
-        
         if currentDay > getNumberOfDayInMonth(tempSelectedDate) {
-            refreshDaysData(tempSelectedDate)
+            maxDayOfMonth = getNumberOfDayInMonth(tempSelectedDate)
+            
+            days.removeAll()
+            for i in 1...maxDayOfMonth {
+                days.append("\(i)")
+            }
+
             pickerView.reloadComponent(DAY_COMPONENT)
-            selectedDate = Date.from(currentYear, month: currentMonth, day: currentDay, hour: currentHour, minute: currentMin)
+            pickerView.selectRow(row - (maxDayOfMonth - currentDay), inComponent: DAY_COMPONENT, animated: false)
+            currentDay = maxDayOfMonth
+           
         }
-        
+         selectedDate = Date.from(currentYear, month: currentMonth, day: currentDay , hour: currentHour, minute: currentMin)
     }
 
 }
