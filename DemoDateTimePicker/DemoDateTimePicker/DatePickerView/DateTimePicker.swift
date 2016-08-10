@@ -211,6 +211,8 @@ class DateTimePicker: UIView {
     }
     
     @IBAction func doneButtonPressed(sender: AnyObject) {
+        currentDay = pickerView.selectedRowInComponent(DAY_COMPONENT) % days.count + 1
+        selectedDate = Date.from(currentYear, month: currentMonth , day: currentDay, hour: currentHour, minute: currentMin)
         delegate?.DateTimePiker(self, doneButtonPressed: sender as! UIButton, selecedDate: self.selectedDate)
     }
     
@@ -355,19 +357,22 @@ extension DateTimePicker: UIPickerViewDelegate {
         }
         
         let tempSelectedDate = Date.from(currentYear, month: currentMonth , day: 2, hour: 1, minute: 0)
-        print("Selected Date: \(tempSelectedDate)")
+        maxDayOfMonth = getNumberOfDayInMonth(tempSelectedDate)
         if currentDay > getNumberOfDayInMonth(tempSelectedDate) {
-            maxDayOfMonth = getNumberOfDayInMonth(tempSelectedDate)
-            
             days.removeAll()
             for i in 1...maxDayOfMonth {
                 days.append("\(i)")
             }
-
             pickerView.reloadComponent(DAY_COMPONENT)
-            pickerView.selectRow(row - (maxDayOfMonth - currentDay), inComponent: DAY_COMPONENT, animated: false)
             currentDay = maxDayOfMonth
            
+        }
+        if days.count < maxDayOfMonth {
+            days.removeAll()
+            for i in 1...maxDayOfMonth {
+                days.append("\(i)")
+            }
+            pickerView.reloadComponent(DAY_COMPONENT)
         }
          selectedDate = Date.from(currentYear, month: currentMonth, day: currentDay , hour: currentHour, minute: currentMin)
     }
